@@ -13,15 +13,14 @@ print("\nBest of luck {} and {}".format(players[0].name, players[1].name))
 
 new_game.game_start()
 for i in range(5):
-    # print(i+1)
-    if i == 4:
+    if i == 4 and not new_game.stop:
         new_game.game_move(players[0])
         break
-    else:
+    elif not new_game.stop:
         new_game.game_move(players[0])
-    if i == 4:
+    if i == 4 and not new_game.stop:
         new_game.game_move(players[1])
         break
-    else:
+    elif not new_game.stop:
         new_game.game_move(players[1])
 new_game.game_end()

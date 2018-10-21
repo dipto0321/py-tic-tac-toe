@@ -1,4 +1,5 @@
 from pyfiglet import figlet_format
+from classes.usefull import *
 
 
 class Game:
@@ -8,6 +9,7 @@ class Game:
             self.box_list.append(i)
         self.__combination = ("036", "147", "258", "012",
                               "345", "678", "048", "246")
+        self.stop = False
 
     @staticmethod
     def show_title():
@@ -56,20 +58,21 @@ class Game:
         player_obj.choices.append(int(box_choose) - 1)
         self.update_box_list(int(box_choose) - 1, player_obj.sign)
         player_obj.step += 1
-        if self.game_state_check(player_obj):
-            self.game_end()
+        self.stop = self.game_state_check(player_obj)
         self.draw_board()
 
     def game_state_check(self, player_obj):
         choose_str = ''.join(map(str, player_obj.choices))
         choose_length = len(choose_str)
         if choose_length >= 3:
-            for val in self.__combination:
-                for i in range(choose_length-2):
-                    if val is choose_str[i:i+3]:
-                        print("{} won! in {} steps".format(
+            move_choices = probability_comb(choose_str, 3)
+            for move in move_choices:
+                for won_comb in self.__combination:
+                    if move == won_comb:
+                        print("{} WON! in {} moves".format(
                             player_obj.name, player_obj.step))
                         return True
+
         if choose_length >= 4:
             return False
 
