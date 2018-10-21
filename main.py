@@ -1,6 +1,7 @@
 from classes.game import *
-# TODO: Remove this import
-# from classes.test import *
+# TODO:
+# FIXME: Box input same detection
+
 new_game = Game()
 new_game.show_title()
 players_info = new_game.plyars_info_collect()
