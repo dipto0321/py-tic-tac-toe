@@ -1,6 +1,6 @@
 from classes.game import *
-# TODO:
-# FIXME: Box input same detection
+from random import randint
+
 
 new_game = Game()
 new_game.show_title()
@@ -11,17 +11,12 @@ for player in players_info:
     players.append(Player(player, players_info[player]))
     players[len(players) - 1].show_player_info()
 print("\nBest of luck {} and {}".format(players[0].name, players[1].name))
+FIRST_MOVE = randint(0, 1)
+SECOND_MOVE = 1 if FIRST_MOVE is 0 else 0
 
 new_game.game_start()
-for i in range(5):
-    if i == 4 and not new_game.stop:
-        new_game.game_move(players[0])
-        break
-    elif not new_game.stop:
-        new_game.game_move(players[0])
-    if i == 4 and not new_game.stop:
-        new_game.game_move(players[1])
-        break
-    elif not new_game.stop:
-        new_game.game_move(players[1])
+for i in range(4):
+    new_game.game_move(players[FIRST_MOVE])
+    new_game.game_move(players[SECOND_MOVE])
+new_game.game_move(players[FIRST_MOVE])
 new_game.game_end()

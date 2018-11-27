@@ -4,11 +4,9 @@ from classes.usefull import *
 
 class Game:
     def __init__(self):
-        self.box_list = []
-        for i in range(1, 10):
-            self.box_list.append(i)
-        self.__combination = ("036", "147", "258", "012",
-                              "345", "678", "048", "246")
+        self.box_list = [i for i in range(1, 10)]
+        self.__combination = ([0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 1, 2],
+                              [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6])
         self.stop = False
 
     @staticmethod
@@ -49,32 +47,22 @@ class Game:
         self.box_list[select_box] = sign
 
     def game_move(self, player_obj):
-        box_choose = input(
-            "{} insert box number from above game board > ".format(player_obj.name))
-        if not "1" <= box_choose <= "9" and self.box_list[int(box_choose)-1] is box_choose:
+        # valid_input_list = [i for i in range(1, 10)]
+        box_choose = int(input(
+            "{} insert box number from above game board > ".format(player_obj.name)))
+        if box_choose in self.box_list:
+            player_obj.choices.append(box_choose - 1)
+            self.update_box_list(box_choose - 1, player_obj.sign)
+            player_obj.step += 1
+            # self.stop = self.game_state_check(player_obj)
+            self.draw_board()
+        else:
             print(
                 "\nInvalid input.Please check gameboard avaiable number and input again\n")
             self.game_move(player_obj)
-        player_obj.choices.append(int(box_choose) - 1)
-        self.update_box_list(int(box_choose) - 1, player_obj.sign)
-        player_obj.step += 1
-        self.stop = self.game_state_check(player_obj)
-        self.draw_board()
 
     def game_state_check(self, player_obj):
-        choose_str = ''.join(map(str, player_obj.choices))
-        choose_length = len(choose_str)
-        if choose_length >= 3:
-            move_choices = probability_comb(choose_str, 3)
-            for move in move_choices:
-                for won_comb in self.__combination:
-                    if move == won_comb:
-                        print("{} WON! in {} moves".format(
-                            player_obj.name, player_obj.step))
-                        return True
-
-        if choose_length >= 4:
-            return False
+        pass
 
     def game_start(self):
         self.draw_board()
