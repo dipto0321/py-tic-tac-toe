@@ -1,5 +1,4 @@
 from pyfiglet import figlet_format
-from .usefull import *
 from itertools import permutations as perm
 
 
@@ -8,6 +7,7 @@ class Game:
         self.box_list = [i for i in range(1, 10)]
         self.__combination = [(0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 1, 2),
                               (3, 4, 5), (6, 7, 8), (0, 4, 8), (2, 4, 6)]
+        self.stop = False
 
     @staticmethod
     def show_title():
@@ -47,32 +47,32 @@ class Game:
         self.box_list[select_box] = sign
 
     def game_move(self, player_obj):
-        box_choose = int(input(
-            "{} insert box number from above game board > ".format(player_obj.name)))
-        if box_choose in self.box_list:
-            player_obj.choices.append(box_choose - 1)
-            self.update_box_list(box_choose - 1, player_obj.sign)
-            player_obj.step += 1
-            self.game_state_check(player_obj)
-            if player_obj.win:
-                print("{}, Congrates! ".format(player_obj.name))
-                self.game_end()
-            else:
-                self.draw_board()
+        if not self.stop:
+            self.draw_board()
+            box_choose = int(input(
+                "{} insert box number from above game board > ".format(player_obj.name)))
+            if box_choose in self.box_list:
+                player_obj.choices.append(box_choose - 1)
+                self.update_box_list(box_choose - 1, player_obj.sign)
+                player_obj.step += 1
+                self.game_state_check(player_obj)
+                if player_obj.win:
+                    self.draw_board()
+                    print("{}, Congrates! ".format(player_obj.name))
+                    self.stop = True
 
-        else:
-            print(
-                "\nInvalid input.Please check gameboard avaiable number and input again\n")
-            self.game_move(player_obj)
+            else:
+                print(
+                    "\nInvalid input.Please check gameboard avaiable number and input again\n")
+                self.game_move(player_obj)
 
     def game_state_check(self, player_obj):
         length = len(player_obj.choices)
         if length >= 3:
-            choice_comb = perm(player_obj.choices, 3)
             for comb in self.__combination:
+                choice_comb = perm(player_obj.choices, 3)
                 if comb in choice_comb:
                     player_obj.win = True
-                    break
 
     def game_start(self):
         self.draw_board()

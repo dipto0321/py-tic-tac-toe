@@ -14,9 +14,11 @@ print("\nBest of luck {} and {}".format(players[0].name, players[1].name))
 FIRST_MOVE = randint(0, 1)
 SECOND_MOVE = 1 if FIRST_MOVE is 0 else 0
 
-new_game.game_start()
+# new_game.game_start()
 for i in range(4):
     new_game.game_move(players[FIRST_MOVE])
     new_game.game_move(players[SECOND_MOVE])
 new_game.game_move(players[FIRST_MOVE])
+# if not (players[0].win and players[1].win):
+#     print('Match draw!\n')
 new_game.game_end()
